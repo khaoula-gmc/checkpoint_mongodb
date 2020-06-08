@@ -1,47 +1,131 @@
 ************************************1**************************************************
 Create a database called "contact"
+
+Query:
 use contact
+
+
+Output:
+switched to db contact
 
 ***********************************2**********************************************
 Create a collection called "contactlist"
+
+Query:
 db.createCollection("contactlist")
+
+
+Output:
+{ "ok" : 1 }
 
 ***********************************3**********************************************
 
 Insert 3 persons in "contactlist" :
 
-db.contactlist.insertMany([{Last name: "Ben Lahmer", First name: "Fares", Email: "fares@gmail.com",age:26},
-{Last name: "Kefi", First name:"Seif", Email: "kefi@gmail.com", age:15},
-{Last name: "Fatnassi", First name:"Sarra", Email: "sarra.f@gmail.com", age:40},
-{Last name: "Ben Yahia", First name: "Rym", age:4},
-{Last name: "Cherif, First name:"Sami", age:3}])
+Query:
+db.contactlist.insertMany([{LastName: "Ben Lahmer", FirstName: "Fares", Email: "fares@gmail.com",age:26},{LastName: "Kefi", FirstName:"Seif", Email: "kefi@gmail.com", age:15},{LastName: "Fatnassi", FirstName:"Sarra", Email: "sarra.f@gmail.com", age:40},{LastName: "Ben Yahia", FirstName: "Rym", age:4},{LastName: "Cherif", FirstName:"Sami", age:3}])
 
+Output:
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("5ede355be97583d4ff1b02e6"),
+                ObjectId("5ede355be97583d4ff1b02e7"),
+                ObjectId("5ede355be97583d4ff1b02e8"),
+                ObjectId("5ede355be97583d4ff1b02e9"),
+                ObjectId("5ede355be97583d4ff1b02ea")
+        ]
+}
 *************************************4**********************************************
 
 Display all the contact list
+
+Query:
 db.contactlist.find()
+
+
+Output:
+{ "_id" : ObjectId("5ede355be97583d4ff1b02e6"), "LastName" : "Ben Lahmer", "FirstName" : "Fares", "Email" : "fares@gmail.com", "age" : 26 }
+{ "_id" : ObjectId("5ede355be97583d4ff1b02e7"), "LastName" : "Kefi", "FirstName" : "Seif", "Email" : "kefi@gmail.com", "age" : 15 }
+{ "_id" : ObjectId("5ede355be97583d4ff1b02e8"), "LastName" : "Fatnassi", "FirstName" : "Sarra", "Email" : "sarra.f@gmail.com", "age" : 40 }
+{ "_id" : ObjectId("5ede355be97583d4ff1b02e9"), "LastName" : "Ben Yahia", "FirstName" : "Rym", "age" : 4 }
+{ "_id" : ObjectId("5ede355be97583d4ff1b02ea"), "LastName" : "Cherif", "FirstName" : "Sami", "age" : 3 }
 
 **************************************5*********************************************
 
 Display all the information about only one person using his id:
- db.contactlist.find({_id:ObjectId("5edd18e6dff627a060aa2b3e")},)
+
+Query:
+ db.contactlist.find({_id:ObjectId("5ede355be97583d4ff1b02ea")},)
+
+
+Output:
+{ "_id" : ObjectId("5ede355be97583d4ff1b02ea"), "LastName" : "Cherif", "FirstName" : "Sami", "age" : 3 }
 
 **************************************6*******************************************
 
 Display all the contact list having age>18 and name containing "ah"
+
+Query:
 db.contactlist.find({age:{$gt:18},$or:[{LastName:/ah/},{FirtstName:/ah/}]},).pretty()
+
+Output:
+{
+        "_id" : ObjectId("5ede355be97583d4ff1b02e6"),
+        "LastName" : "Ben Lahmer",
+        "FirstName" : "Fares",
+        "Email" : "fares@gmail.com",
+        "age" : 26
+}
 
 ****************************************7*******************************************
 
 Change the contact first name of "kefi Seif" by "Kefi Anis"
+
+Query:
 db.contactlist.update({LastName:'Kefi',FirstName:'Seif'},{$set:{FirstName:'Anis'}})
+
+Output:
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
 
 ***************************************8********************************************
 
 Delete the contact list having age < 5:
+
+Query:
 db.contactlist.deleteMany({age:{$lt:5}})
+
+
+Output:
+{ "acknowledged" : true, "deletedCount" : 2 }
 
 ***************************************9********************************************
 
 Display all the contact list:
+
+Query:
 db.contactlist.find().pretty()
+
+
+Output:
+{
+        "_id" : ObjectId("5ede355be97583d4ff1b02e6"),
+        "LastName" : "Ben Lahmer",
+        "FirstName" : "Fares",
+        "Email" : "fares@gmail.com",
+        "age" : 26
+}
+{
+        "_id" : ObjectId("5ede355be97583d4ff1b02e7"),
+        "LastName" : "Kefi",
+        "FirstName" : "Anis",
+        "Email" : "kefi@gmail.com",
+        "age" : 15
+}
+{
+        "_id" : ObjectId("5ede355be97583d4ff1b02e8"),
+        "LastName" : "Fatnassi",
+        "FirstName" : "Sarra",
+        "Email" : "sarra.f@gmail.com",
+        "age" : 40
+}
